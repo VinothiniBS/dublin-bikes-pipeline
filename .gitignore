@@ -216,3 +216,17 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Secrets
+.env
+include/gcp_keyfile.json
+dbt_dublin_bikes/profiles.yml
+
+# dbt
+dbt_dublin_bikes/target/
+dbt_dublin_bikes/dbt_packages/
+dbt_dublin_bikes/logs/
+
+# Astro/Airflow
+.astro/
+airflow_settings.yaml
