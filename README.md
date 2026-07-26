@@ -88,7 +88,7 @@ dublin-bikes-pipeline/
 
 ## Running it locally
 
-1. Clone the repo and add your credentials to a `.env` file and a BigQuery service-account key at `include/gcp_keyfile.json`.
+1. Clone the repo and add your credentials to a `.env` file (see `.env.example`) and a BigQuery service-account key at `include/gcp_keyfile.json`.
 2. Start Airflow: `astro dev start` - the ingestion DAG runs every 15 minutes.
 3. Build the models: `cd dbt_dublin_bikes && dbt deps && dbt run && dbt test`.
 
