@@ -1,0 +1,28 @@
+name: 'dbt_dublin_bikes'
+version: '1.0.0'
+config-version: 2
+
+# This profile name links to the connection defined in profiles.yml
+profile: 'dbt_dublin_bikes'
+
+# Where dbt looks for each type of file
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# How models in each folder are materialised in BigQuery.
+# staging -> views (lightweight, always reflect the latest raw data)
+# marts   -> tables (analysis-ready, faster for the dashboard to read)
+models:
+  dbt_dublin_bikes:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table

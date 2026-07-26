@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: stg_station_status
+    description: >
+      One clean, deduplicated row per station per snapshot. Standardises column
+      names and types, converts the epoch last_update into a timestamp, and
+      derives an occupancy ratio.
+    columns:
+      - name: station_id
+        description: "Unique station identifier from the JCDecaux API."
+        data_tests:
+          - not_null
+
+      - name: snapshot_at
+        description: "UTC timestamp of the snapshot."
+        data_tests:
+          - not_null
+
+      - name: status
+        description: "Operational status reported by the API."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['OPEN', 'CLOSED']
+
+      - name: available_bikes
+        description: "Bikes available to hire at snapshot time."
+        data_tests:
+          - not_null
+
+      - name: occupancy_ratio
+        description: "Share of docks holding a bike, between 0 and 1."
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 1
+              inclusive: true
+
+    # Composite check: no station should appear twice in the same snapshot.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - station_id
+            - snapshot_at

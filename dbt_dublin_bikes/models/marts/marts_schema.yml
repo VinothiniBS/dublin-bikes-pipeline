@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: fct_station_hourly
+    description: >
+      Average bike availability across all Dublin Bikes stations by hour of day.
+      Built from every snapshot collected. Used to identify peak and quiet hours.
+    columns:
+      - name: hour_of_day
+        description: "Hour of day, 0-23 (UTC)."
+        data_tests:
+          - not_null
+          - unique
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 23
+                inclusive: true
+      - name: avg_occupancy_ratio
+        description: "Average share of docks holding a bike in this hour (0-1)."
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 1
+                inclusive: true
+
+  - name: fct_station_summary
+    description: >
+      One row per station summarising typical availability across all snapshots,
+      including how often each station runs completely empty or completely full.
+    columns:
+      - name: station_id
+        description: "Unique station identifier."
+        data_tests:
+          - not_null
+          - unique
+      - name: avg_occupancy_ratio
+        description: "Average share of docks holding a bike (0-1)."
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 1
+                inclusive: true

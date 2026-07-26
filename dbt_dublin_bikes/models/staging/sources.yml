@@ -1,0 +1,26 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Raw Dublin Bikes station snapshots ingested from the JCDecaux API by the Airflow pipeline."
+    database: dublin-bikes-pipeline
+    schema: dublin_bikes
+    tables:
+      - name: raw_station_status
+        description: "One row per station per 15-minute snapshot. Appended by the ingestion DAG."
+        config:
+          loaded_at_field: pulled_at
+          freshness:
+            warn_after: {count: 30, period: minute}
+            error_after: {count: 60, period: minute}
+        columns:
+          - name: pulled_at
+            description: "UTC timestamp when this snapshot was pulled from the API."
+          - name: number
+            description: "Unique station identifier."
+          - name: available_bikes
+            description: "Bikes available to hire at pull time."
+          - name: available_bike_stands
+            description: "Empty stands available at pull time."
+          - name: bike_stands
+            description: "Total docking capacity of the station."
