@@ -98,7 +98,7 @@ dublin-bikes-pipeline/
 
 ## Analysis
 
-*Based on 15-minute snapshots of all 114 Dublin Bikes stations. City-wide mean occupancy across the collection window was **0.36** — on average, roughly a third of docks held a bike at any given time.*
+*Based on 15-minute snapshots of all 114 Dublin Bikes stations. City-wide mean occupancy across the collection window was **0.36** - on average, roughly a third of docks held a bike at any given time.*
 
 ### A clear supply imbalance between north and south of the Liffey
 
