@@ -4,6 +4,8 @@ An end-to-end data pipeline that ingests live Dublin Bikes station data, transfo
 
 **Live dashboard:** [Dublin Bikes - Availability & Station Health](https://datastudio.google.com/s/jqqFSljMhps)
 
+<iframe width="600" height="450" src="https://datastudio.google.com/embed/reporting/14fb42d3-d03f-490d-8813-88397fdb459b/page/jnp4F" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+
 ---
 
 ## What it does
