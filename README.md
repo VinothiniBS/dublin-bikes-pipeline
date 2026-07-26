@@ -22,14 +22,14 @@ Every 15 minutes, the pipeline pulls a live snapshot of all ~114 Dublin Bikes st
 JCDecaux API
      │   Python fetch (requests)
      ▼
-BigQuery — raw_station_status        (raw layer: one row per station per snapshot, partitioned by date)
+BigQuery - raw_station_status        (raw layer: one row per station per snapshot, partitioned by date)
      │   dbt transformations (SQL)
      ▼
-BigQuery — stg_station_status        (staging: deduplicated, typed, epoch → timestamp, occupancy derived)
+BigQuery - stg_station_status        (staging: deduplicated, typed, epoch → timestamp, occupancy derived)
      │
      ▼
-BigQuery — fct_station_hourly        (mart: average availability by hour of day)
-BigQuery — fct_station_summary       (mart: per-station availability + % time empty / full)
+BigQuery - fct_station_hourly        (mart: average availability by hour of day)
+BigQuery - fct_station_summary       (mart: per-station availability + % time empty / full)
      │   BigQuery connector
      ▼
 Data Studio dashboard                (hourly trend, station map, most-empty stations)
@@ -89,7 +89,7 @@ dublin-bikes-pipeline/
 ## Running it locally
 
 1. Clone the repo and add your credentials to a `.env` file (see `.env.example`) and a BigQuery service-account key at `include/gcp_keyfile.json`.
-2. Start Airflow: `astro dev start` — the ingestion DAG runs every 15 minutes.
+2. Start Airflow: `astro dev start` - the ingestion DAG runs every 15 minutes.
 3. Build the models: `cd dbt_dublin_bikes && dbt deps && dbt run && dbt test`.
 
 ---
@@ -126,13 +126,13 @@ The most striking pattern is a geographic split. The stations that sit **empty m
 
 ### What this suggests
 
-The Hardwicke Place and Eccles Street cluster sits near the Mater Hospital and the north-city commuter belt — origin points where people take bikes *out* in the morning and don't return them until evening, so the docks drain and stay drained. Meanwhile the south-quay and city-centre stations (Georges Quay, Townsend Street) are destinations — bikes accumulate faster than they leave, and the stations jam full.
+The Hardwicke Place and Eccles Street cluster sits near the Mater Hospital and the north-city commuter belt - origin points where people take bikes *out* in the morning and don't return them until evening, so the docks drain and stay drained. Meanwhile the south-quay and city-centre stations (Georges Quay, Townsend Street) are destinations - bikes accumulate faster than they leave, and the stations jam full.
 
-**Four of the 114 stations were empty more than half the time.** For a rider, an empty origin station and a full destination station are the two ways the service fails, and both failure modes show up clearly in the data. This is exactly the signal a bike-share operator uses to plan overnight **rebalancing** — physically trucking bikes from the full southern stations back to the empty northern ones before the morning peak.
+**Four of the 114 stations were empty more than half the time** (Hardwicke Place, Eccles Street East, Eccles Street and Denmark Street Great). For a rider, an empty origin station and a full destination station are the two ways the service fails, and both failure modes show up clearly in the data. This is exactly the signal a bike-share operator uses to plan overnight **rebalancing** - physically trucking bikes from the full southern stations back to the empty northern ones before the morning peak.
 
 ### Availability through the day
 
-Across the collection window, city-wide availability stayed relatively flat (around 11 bikes per station on average), with a mild dip in the late afternoon as the evening commute began. A longer collection window — including early-morning and full weekend cycles — would sharpen the daily and weekday-versus-weekend patterns, which the current dataset only begins to show.
+Across the collection window, city-wide availability stayed relatively flat (around 11 bikes per station on average), with a mild dip in the late afternoon as the evening commute began. A longer collection window - including early-morning and full weekend cycles - would sharpen the daily and weekday-versus-weekend patterns, which the current dataset only begins to show.
 
 ### A note on scope
 
@@ -142,6 +142,6 @@ These findings come from a limited collection window rather than a multi-week da
 
 ## Design notes
 
-This project uses a deliberately production-shaped stack — Airflow for scheduled ingestion, Docker for a reproducible runtime, and dbt for tested transformations — because the value of the dashboard depends on data being collected reliably and transformed correctly, not just visualised.
+This project uses a deliberately production-shaped stack - Airflow for scheduled ingestion, Docker for a reproducible runtime, and dbt for tested transformations, because the value of the dashboard depends on data being collected reliably and transformed correctly, not just visualised.
 
-One deliberate scoping choice: Airflow runs locally via the Astro CLI, so collection depends on the host machine being available. A fully production deployment would move ingestion to an always-on serverless scheduler — a natural extension rather than a redesign, since the pipeline logic stays identical.
+One deliberate scoping choice: Airflow runs locally via the Astro CLI, so collection depends on the host machine being available. A fully production deployment would move ingestion to an always-on serverless scheduler - a natural extension rather than a redesign, since the pipeline logic stays identical.
