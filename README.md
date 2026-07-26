@@ -96,6 +96,8 @@ dublin-bikes-pipeline/
 
 ---
 
-## Known limitation & next step
+## Design notes
 
-The current version depends on the host machine being awake, since Airflow runs locally - collection pauses if the laptop sleeps. The natural production evolution is to move ingestion to a **serverless cloud scheduler** (Cloud Scheduler + Cloud Run), so it runs continuously and independently of any machine. That is the focus of the follow-up version.
+This project uses a deliberately production-shaped stack - Airflow for scheduled ingestion, Docker for a reproducible runtime, and dbt for tested transformations, because the value of the dashboard depends entirely on data being collected reliably and transformed correctly, not just visualised.
+
+One deliberate scoping choice: Airflow runs locally via the Astro CLI, so collection depends on the host machine being available. A fully production deployment would move ingestion to an always-on serverless scheduler - a natural extension rather than a redesign, since the pipeline logic stays identical.
